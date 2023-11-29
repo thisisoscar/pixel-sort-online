@@ -1,7 +1,14 @@
 from PIL import Image
 import numpy as np
+import tkinter as tk
+from tkinter import filedialog
 
-location = input('Enter the directory of the image you want to sort: ')
+root = tk.Tk()
+root.withdraw()
+
+location = filedialog.askopenfilename(title='select image to sort')
+
+root.destroy()
 
 image = Image.open(location).convert('RGB')
 
