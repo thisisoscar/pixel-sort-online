@@ -25,9 +25,35 @@ def draw_pil(image):
 
 
 def colour_compare(a, b):
-    if a[0] > b[0] or (a[0] == b[0] and a[1] > b[1]) or (a[0] == b[0] and a[1] == b[1] and a[2] > b[2]):
+    """
+    Lexicographic sort with the most significant index being the hue, next significant being value 
+    and least significant being saturation.
+
+    Args:
+        b (list): A list representing an HSV colour.
+        a (list): A list representing an HSV colour.
+
+    Returns:
+        bool: True if the value of a is less than the value of b.
+    """
+
+    if a[0] < b[0]:
         return True
-    return False
+    elif a[0] > b[0]:
+        return False
+    else:
+        if a[2] < b[2]:
+            return True
+        elif a[2] > b[2]:
+            return False
+        else:
+            if a[1] < b[1]:
+                return True
+            elif a[1] > b[1]:
+                return False
+            else:
+                return False
+
 
 def bubble_sort(array):
     while True:
@@ -98,6 +124,18 @@ def get_comparisons_list(array):
 
 
 def shift(array, old_index, new_index):
+    """
+    Moves an element from one index of an array to another. All the elements between the old and new
+    indexes gets shifted so that no data is overwritten.
+
+    Args:
+        array (list): The list where an element is shifted.
+        old_index (_type_): The old index of the element.
+        new_index (_type_): The index that the element needs to move to.
+
+    Returns:
+        list: the array with the shuffled values.
+    """
     for i in range(old_index, new_index, -1):
         a = i
         b = i-1
@@ -107,6 +145,19 @@ def shift(array, old_index, new_index):
 
 
 def merge_index_lists(array, a_indexes, b_indexes):
+    """
+    This function does the equivalent of merging two lists together. It takes in two lists of indexes
+    and merges them inside the array variable using the shift function.
+
+    Args:
+        array (list): The full list where the merge is being performed.
+        a_indexes (list): A list of 'array' indexes to be sorted.
+        b_indexes (list): A list of 'array' indexes to be sorted.
+
+    Returns:
+        list: The array after the indexes have been merged.
+    """
+    
     array = array.copy()
     a_indexes = a_indexes.copy()
     b_indexes = b_indexes.copy()
@@ -127,6 +178,17 @@ def merge_index_lists(array, a_indexes, b_indexes):
 
 
 def in_place_merge(array):
+    """
+    Merge sorts a 2D array representing pixels of an image. Sorting is performed on the same array 
+    so that the whole array is yielded after each merge operation.
+
+    Args:
+        array (list): a 2D list representing an image.
+
+    Yields:
+        list: The state of 'array' after each merge operation is performed.
+    """
+
     array = array.copy()
     comparisons = get_comparisons_list(array)
     
@@ -139,6 +201,13 @@ def in_place_merge(array):
     while True:
         yield array
     
+save_frames = ''
+while save_frames not in ['Y', 'N']:
+    save_frames = input('Do you want to save each frame while it\'s sorting? This will turn the output off.\n[Y/N]: ').upper()
+
+if save_frames == 'Y':
+    '''[1] bubble\n[2]merge etc'''
+    algorithm = input('Enter a sorting algorithm: ')
 
 location = input('Enter the directory of the image you want to see being sorted: ')
 valid = False
